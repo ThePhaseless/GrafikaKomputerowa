@@ -5,7 +5,9 @@ import sys
 from pathlib import Path
 
 
-def notebook_to_pdf(notebook_path: str, output_path: str | None = None, execute: bool = True) -> str:
+def notebook_to_pdf(
+    notebook_path: str, output_path: str | None = None, execute: bool = True
+) -> str:
     """Convert a Jupyter notebook to PDF using nbconvert.
 
     Args:
@@ -53,7 +55,9 @@ def notebook_to_pdf(notebook_path: str, output_path: str | None = None, execute:
     return str(pdf_path)
 
 
-def notebook_to_html(notebook_path: str, output_path: str | None = None, execute: bool = True) -> str:
+def notebook_to_html(
+    notebook_path: str, output_path: str | None = None, execute: bool = True
+) -> str:
     """Convert a Jupyter notebook to HTML (fallback if LaTeX is not installed).
 
     Args:
@@ -101,7 +105,9 @@ def notebook_to_html(notebook_path: str, output_path: str | None = None, execute
     return str(html_path)
 
 
-def convert_all_notebooks(root_dir: str = ".", fmt: str = "pdf", execute: bool = True) -> list[str]:
+def convert_all_notebooks(
+    root_dir: str = ".", fmt: str = "pdf", execute: bool = True
+) -> list[str]:
     """Find and convert all notebooks in subdirectories to the given format.
 
     Args:
