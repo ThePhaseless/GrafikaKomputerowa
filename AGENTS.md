@@ -76,7 +76,8 @@ For each task (Zadanie N):
 ## Code Style Rules
 
 - **All text in Polish** (markdown, conclusions, plot titles)
-- **Implement from scratch** using numpy — no scikit-image, OpenCV, or scipy unless the task explicitly permits it
+- **Implement from scratch** using numpy where the task does not map directly to a standard MATLAB/Octave function that already exists in a Python library
+- **MATLAB/Octave equivalents first**: if the task uses or references a MATLAB/Octave function, first look for an equivalent in the currently installed Python libraries; if it is missing, add and install a suitable library instead of reimplementing that function manually
 - **Grayscale images**: `cmap='gray'`, `ax.axis('off')`
 - **Side-by-side plots**: `plt.subplots(1, N, figsize=(width, 5))`
 - **Normalize helper** for float images: `(x - x.min()) / (x.max() - x.min())`
@@ -87,7 +88,9 @@ For each task (Zadanie N):
 - **filter2d helper** for 2D convolution tasks (MATLAB `filter2` equivalent)
 
 ## Dependencies
-Only use packages from `pyproject.toml`:
+Only use packages from `pyproject.toml` by default. If a required MATLAB/Octave-equivalent function is not available in the currently installed dependencies, add an appropriate package to `pyproject.toml` and install it instead of reimplementing the function.
+
+Current dependencies:
 - numpy, matplotlib, Pillow, imageio, pandas, nbconvert, pandoc, pymupdf
 
 ## PDF Conversion
