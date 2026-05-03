@@ -1,0 +1,8 @@
+Opis zadania
+Projekt polega na wygenerowaniu obrazu dwóch trójkątów 3D obserwowanych przez kamerę perspektywiczną, a następnie na przygotowaniu wariantów z otworem w trójkącie A oraz animacji obrotu i przesunięcia obu obiektów. Parametry sceny, rozdzielczość obrazu i współczynniki ruchu wynikają bezpośrednio z treści zadania oraz numeru albumu.
+
+Rozważane warianty rozwiązań
+Można było podejść do problemu przez bezpośrednie liczenie każdego kroku osobnymi wzorami dla każdego wariantu sceny albo zbudować jeden wspólny pipeline przetwarzania geometrii i renderingu. W przypadku animacji możliwe było też zapisywanie plików GIF na dysku albo generowanie ich bezpośrednio w pamięci notatnika. Przy wyznaczaniu widocznej strony trójkąta można było dodatkowo użyć prostego testu znaku składowej normalnej albo testu orientacji względem środka projekcji.
+
+Opis zrealizowanego rozwiązania
+Zastosowano wspólny pipeline oparty na współrzędnych jednorodnych i mnożeniu macierzy: transformację RPY z translacją, rzut perspektywiczny, przejście do współrzędnych pikselowych oraz rasteryzację z wykorzystaniem z-bufora. Warianty z otworem realizowane są przez odjęcie obszaru wewnętrznego trójkąta od maski wypełnienia. Dla animacji wykorzystano te same funkcje renderujące oraz generowanie GIF bezpośrednio w pamięci, a wybór koloru widocznej strony odbywa się na podstawie orientacji płaszczyzny trójkąta względem środka projekcji.
