@@ -1,0 +1,52 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": ["AGENTS.md"],
+  "snapshot": true,
+
+  "mcp": {
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "-y", "@playwright/mcp@latest"],
+      "enabled": true,
+      "environment": {
+        "BROWSER": "chromium"
+      },
+      "timeout": 30000
+    },
+    "github": {
+      "type": "local",
+      "command": [".opencode/scripts/github-mcp-server.sh"],
+      "enabled": true,
+      "timeout": 15000
+    },
+    "jupyter": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-jupyter"],
+      "enabled": true,
+      "timeout": 15000
+    },
+    "git": {
+      "type": "local",
+      "command": ["uvx", "mcp-server-git"],
+      "enabled": true,
+      "timeout": 15000
+    }
+  },
+
+  "permission": {
+    "bash": {
+      "git *": "allow",
+      "python *": "allow",
+      "uv *": "allow",
+      "mise *": "allow",
+      "bun *": "allow",
+      "node *": "allow",
+      "npx *": "allow",
+      "uvx *": "allow",
+      "*": "ask"
+    },
+    "external_directory": {
+      "*": "deny"
+    }
+  }
+}
