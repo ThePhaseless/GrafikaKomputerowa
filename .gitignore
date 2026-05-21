@@ -8,3 +8,14 @@ wheels/
 
 # Virtual environments
 .venv
+
+# mise
+.mise.local
+mise.local.toml
+
+# Node (MCP servers)
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
