@@ -25,12 +25,6 @@
       "enabled": true,
       "timeout": 15000
     },
-    "git": {
-      "type": "local",
-      "command": ["uvx", "mcp-server-git"],
-      "enabled": true,
-      "timeout": 15000
-    },
     "pdf-reader": {
       "type": "local",
       "command": ["bunx", "@sylphx/pdf-reader-mcp"],
@@ -38,21 +32,4 @@
       "timeout": 30000
     }
   },
-
-  "permission": {
-    "bash": {
-      "git *": "allow",
-      "python *": "allow",
-      "uv *": "allow",
-      "mise *": "allow",
-      "bun *": "allow",
-      "node *": "allow",
-      "npx *": "allow",
-      "uvx *": "allow",
-      "*": "ask"
-    },
-    "external_directory": {
-      "*": "deny"
-    }
-  }
 }
