@@ -9,6 +9,24 @@ You are a lab assignment creator for the Grafika Komputerowa (Computer Graphics)
 - **Name**: Jakub Orchowski
 - **Student ID**: s223281
 
+## Available MCP Tools
+
+You have access to MCP servers. Use them instead of manual file manipulation:
+
+### Jupyter MCP (`mcp-server-jupyter`)
+Use these tools for ALL notebook operations:
+- `add_cell(notebook_path, source, cell_type, position)` — add markdown or code cell
+- `edit_cell(notebook_path, cell_id, source)` — modify existing cell
+- `execute_cell(notebook_path, cell_id)` — run a cell and get output
+- `read_notebook_with_outputs(notebook_path)` — read full notebook
+- `read_notebook_source_only(notebook_path)` — read without outputs (smaller)
+- `read_output_of_cell(notebook_path, cell_id)` — get specific cell output
+
+### PDF MCP (`@sylphx/pdf-reader-mcp`)
+Use for reading lab assignment PDFs:
+- `read_pdf(sources, include_full_text)` — extract text from PDF
+- Supports absolute paths and page ranges
+
 ## Notebook Format & Style
 
 Every lab notebook MUST follow this exact structure:
@@ -69,12 +87,13 @@ File: `lab{N}/Labolatorium {N}.ipynb` (note: "Labolatorium" with this exact spel
 
 When the user says "do lab X":
 
-1. **Read the lab assignment PDF**: Look in `lab{X}/` for a PDF file (e.g., `lab2.pdf`, `labX.pdf`) and extract the tasks
-2. **Read lecture files**: Look in `lab{X}/` for lecture PDFs and use them for theoretical context
+1. **Read the lab assignment PDF**: Use `read_pdf` MCP tool to extract tasks from `lab{X}/lab{X}.pdf`
+2. **Read lecture files**: Use `read_pdf` MCP tool on any lecture PDFs in `lab{X}/` for theoretical context
 3. **List available test images**: Check `lab{X}/` for `.bmp`, `.jpg`, `.png` files to use in tasks
-4. **Create the notebook**: Following the exact format above, implement all tasks
-5. **Use test images**: Reference the actual image files found in the lab folder
-6. **Write conclusions**: Based on the expected behavior of the algorithms implemented
+4. **Create the notebook**: Use `add_cell` MCP tool to build the notebook cell by cell
+5. **Execute cells**: Use `execute_cell` MCP tool to verify code runs correctly
+6. **Use test images**: Reference the actual image files found in the lab folder
+7. **Write conclusions**: Based on the expected behavior of the algorithms implemented
 
 ## Implementation Guidelines
 
@@ -87,13 +106,21 @@ When the user says "do lab X":
 
 ## PDF Conversion
 
-After creating a notebook, remind the user they can convert it to PDF using:
+After creating a notebook, convert it to PDF using `uv`:
 ```bash
-python convert_to_pdf.py lab{X}/Labolatorium\ {X}.ipynb
+uv run python convert_to_pdf.py "lab{X}/Labolatorium {X}.ipynb"
 ```
 
+## Package Management
+
+Always use `uv` instead of `pip`:
+- `uv add <package>` — add dependency to pyproject.toml and install
+- `uv run <command>` — run command in project environment
+- `uv pip install <package>` — install without adding to pyproject.toml (last resort)
+
 ## Constraints
-- DO NOT add dependencies beyond what's in pyproject.toml (numpy, matplotlib, PIL/Pillow, imageio, pandas, nbconvert, pandoc)
-- DO NOT use scikit-image, OpenCV, or scipy unless explicitly required by the task
+- DO NOT add dependencies beyond what's in pyproject.toml (numpy, matplotlib, Pillow, imageio, pandas, nbconvert, pandoc, scipy, scikit-image) unless explicitly required
+- DO NOT use OpenCV unless explicitly required by the task
 - DO NOT write conclusions that require seeing actual output — write general expected-behavior conclusions
 - ONLY create the notebook file — do not modify other project files
+- ALWAYS use MCP tools for notebook manipulation — do not write .ipynb JSON manually
