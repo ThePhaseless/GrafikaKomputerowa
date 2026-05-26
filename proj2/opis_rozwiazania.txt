@@ -1,0 +1,34 @@
+Projekt 2 — Wykorzystanie krzywych B-sklejanych w grafice komputerowej
+Jakub Orchowski, s223281
+
+1. Charakterystyka zadania
+   Celem było zaprojektowanie litery P za pomocą dwóch krzywych B-sklejanych
+   stopnia 2, wygenerowanie obrazu binarnego 640×480 oraz stworzenie kolorowej
+   animacji (~200 klatek) przedstawiającej zmiany kształtu litery.
+
+2. Rozważane warianty rozwiązań
+   a) Wypełnienie metodą scanline — zbyt skomplikowane przy dwóch krzywych
+      (wymaga sortowania krawędzi i obsługi otworu wewnętrznego).
+   b) Point-in-polygon z matplotlib.path — wybrano ze względu na prostotę,
+      wektorowość i niezawodność. Pozwala wypełnić obszar między dwiema
+      zamkniętymi krzywymi niezależnie od ich złożoności.
+
+3. Opis zrealizowanego rozwiązania
+   - Krzywe B-sklejane stopnia 2 zaimplementowano zgodnie z wykładem 5
+     (rekurencja Coxa–de Boora, funkcje bazowe, węzły open-uniform).
+   - Krzywa zewnętrzna obejmuje trzon i główkę litery P; powielone punkty
+     kontrolne tworzą załamania w narożnikach.
+   - Krzywa wewnętrzna modeluje otwór w główce jako gładki owal.
+   - Obie krzywe są zamknięte (pierwszy i ostatni punkt identyczny) i
+     przesunięte do środka obrazu 640×480.
+   - Animacja powstaje przez morfowanie punktów kontrolnych z wykorzystaniem
+     funkcji sinusoidalnej; litera pulsuje, a otwór oddycha.
+   - Kolorystyka wykorzystuje przestrzeń HSV z przesuwanym hue w czasie
+     i gradientem wzdłuż osi x.
+
+4. Instrukcja uruchomienia
+   - Otworzyć notebook proj2.ipynb w Jupyter.
+   - Uruchomić komórki sekwencyjnie (Run All).
+   - Wymagane pakiety: numpy, matplotlib, Pillow, imageio, scipy.
+   - Zalecane uruchomienie przez: uv run jupyter notebook proj2.ipynb
+   - Wyniki: obraz binarny w części I, animacja literaP_kolor.avi w części II.
