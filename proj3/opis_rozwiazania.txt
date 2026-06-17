@@ -1,0 +1,53 @@
+Projekt 3 - Implementacja wybranych algorytmów grafiki komputerowej
+Jakub Orchowski, s223281
+
+1. Charakterystyka zadania
+
+Celem projektu było wygenerowanie obrazów i animacji przedstawiających trzy trójkąty 3D (A, B, C) rzutowane równolegle na płaszczyznę OXY. Trójkąty mają zadane współrzędne narożników i różne kolory bazowe (współczynniki odbicia ε). Scena jest oświetlona światłem tła oraz punktowym źródłem światła o spadku natężenia z odległością.
+
+W Części I należało wygenerować dwa obrazy:
+  - z modelem oświetlenia Lamberta,
+  - z modelem oświetlenia Phonga (oko w [10,5,40], m=15).
+
+W Części II należało wygenerować dwie animacje (co najmniej 200 klatek) z ruchomym źródłem światła poruszającym się po okręgu, osobno dla Lamberta i Phonga.
+
+W obrazach i animacjach muszą być uwzględnione przecięcia trójkątów i wzajemne rzucanie cieni.
+
+2. Rozważane warianty rozwiązań
+
+  a) Renderowanie piksel po pikselu w czystym Pythonie - proste, ale bardzo wolne dla 640×480 i 200 klatek animacji.
+  b) Wektorowy renderer w numpy - wyznaczenie geometrii sceny raz, a następnie szybkie przeliczanie oświetlenia i cieni w każdej klatce. Wybrano ten wariant ze względu na wydajność i czytelność kodu.
+  c) Użycie gotowego silnika 3D (np. OpenGL, Pygame, trimesh) - odrzucone, ponieważ projekt polega na implementacji algorytmów od podstaw.
+
+3. Opis zrealizowanego rozwiązania
+
+  - Rzutowanie równoległe na OXY: dla każdego pixela (i,j) obliczane są współrzędne światowe (x,y), a następnie wyznaczane jest przecięcie pionowego promienia (równoległego do osi OZ) z płaszczyzną każdego trójkąta. Wybierany jest trójkąt o największej wartości z (najbliższy obserwatorowi). Oznacza to, że obserwator patrzy na scenę z góry wzdłuż osi OZ (kierunek patrzenia to -Z), a źródło światła znajduje się pod trójkątami (z = -28), więc trójkąty są oświetlane od spodu. Cienie widoczne na obrazach powstają tam, gdzie bliższe źródłu światła trójkąty zasłaniają światło przed dalszymi.
+  - Test przynależności do trójkąta: metoda barycentryczna w 2D.
+  - Współrzędne 3D punktu na powierzchni: obliczane z równania płaszczyzny trójkąta z = a·x + b·y + c.
+  - Wektor normalny: iloczyn wektorowy dwóch boków trójkąta, znormalizowany.
+  - Model Lamberta: I(p) = ε·(I_amb + I_max/(1+0.001·|p-p_light|²)·max(0,n·l)).
+  - Model Phonga: do składowej Lamberta dodajemy czynnik zwierciadlany max(0,r·v)^m, gdzie r = 2(n·l)n − l, a v to kierunek do oka. Zgodnie z wykładem przyjęto f(n,l) = max(0,n·l).
+  - Cienie: dla każdego punktu p sprawdzamy, czy promień od źródła światła do p przecina inny trójkąt w odległości mniejszej niż |p-p_light| (parametr t ∈ (0,1)). Jeśli tak - piksel oświetlany jest tylko światłem tła.
+  - Optymalizacja animacji: maski trójkątów, współrzędne 3D punktów i normalne obliczane są jednorazowo. W każdej kolejnej klatce zmienia się tylko położenie źródła światła, co pozwala wygenerować 200 klatek w kilka sekund.
+  - Wersja 20-klatkowa: zgodnie z uwagą w treści projektu, dodano osobne krótkie pliki AVI z pierwszych 20 klatek do szybkiej weryfikacji.
+
+4. Instrukcja uruchomienia
+
+  1. Otwórz notebook proj3/proj3.ipynb w Jupyter Notebook/Lab.
+  2. Uruchom wszystkie komórki kolejno od góry (Run All).
+  3. Wymagane pakiety (zadeklarowane w pyproject.toml): numpy, matplotlib, imageio.
+  4. Zalecane uruchomienie przez menedżer uv:
+       uv run jupyter notebook proj3.ipynb
+  5. Wyniki zapisane w folderze proj3/:
+       - lambert.png, phong.png - obrazy Części I
+       - anim_lambert.avi, anim_phong.avi - pełne animacje (200 klatek)
+       - anim_lambert_20.avi, anim_phong_20.avi - skrócone animacje (20 klatek)
+
+5. Pliki wynikowe
+
+W folderze proj3/ znajdują się:
+  - proj3.ipynb - kod źródłowy wraz z opisem i wnioskami
+  - opis_rozwiazania.txt - niniejszy plik
+  - lambert.png, phong.png - obrazy statyczne
+  - anim_lambert.avi, anim_phong.avi - animacje pełne
+  - anim_lambert_20.avi, anim_phong_20.avi - animacje skrócone
