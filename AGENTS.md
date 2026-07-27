@@ -90,8 +90,17 @@ For each task (Zadanie N):
 ## Dependencies
 Only use packages from `pyproject.toml` by default. If a required MATLAB/Octave-equivalent function is not available in the currently installed dependencies, add an appropriate package to `pyproject.toml` and install it instead of reimplementing the function.
 
+**Package installation rules:**
+- **Never use `pip` directly**. Always use `uv`.
+- For packages needed **more than once** (recurring dependencies): use `uv add <package>` to add them to `pyproject.toml`.
+- For **one-time use** tools or scripts: use `uvx <package>` instead of installing.
+
 Current dependencies:
 - numpy, matplotlib, Pillow, imageio, pandas, nbconvert, pandoc, pymupdf
+
+## Subagent Usage
+
+When the user says **"do lab X"**, **"create lab X"**, **"zrób lab X"**, **"do project X"**, etc., always invoke the `lab-creator` subagent via the `task` tool instead of creating the notebook directly in the main session.
 
 ## PDF Conversion
 ```bash
@@ -100,7 +109,6 @@ python convert_to_pdf.py "lab{X}/Labolatorium {X}.ipynb"
 
 # Convert without executing:
 python convert_to_pdf.py --no-execute "lab{X}/Labolatorium {X}.ipynb"
-
-# Convert to HTML instead:
-python convert_to_pdf.py --format html "lab{X}/Labolatorium {X}.ipynb"
 ```
+
+**TinyTeX auto-install:** If using TinyTeX, missing LaTeX packages (e.g., `.sty` files) are automatically installed via `tlmgr` during PDF conversion. No manual intervention required.
